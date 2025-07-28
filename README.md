@@ -16,19 +16,23 @@ This project is a modern, visually stunning analytics dashboard built rapidly us
 -   **Responsive Design:** Flawless experience on desktop, tablet, and mobile devices.
 -   **Dark/Light Mode:** Seamless theme switching for user comfort.
 -   **Date Range Filtering:** An advanced filter to select custom date ranges for analysis.
+-   **Real-time Updates:** Simulated real-time data updates every 10 seconds for dynamic dashboard experience.
+-   **Export Functionality:** Export sales data as PDF or CSV files with a single click.
 
 ---
 
 ## 🚀 Tech Stack
 
--   **Framework:** React
+-   **Framework:** React 19
 -   **Language:** TypeScript
 -   **Styling:** Tailwind CSS
 -   **UI Components:** Custom components inspired by shadcn/ui
 -   **Charting:** Recharts
 -   **Icons:** Lucide React
 -   **Table Management:** TanStack Table
--   **Dependencies:** Served via CDN using an `importmap`.
+-   **PDF Export:** jsPDF with jsPDF-AutoTable
+-   **CSV Export:** PapaParse
+-   **Build Tool:** Vite
 
 ---
 
@@ -36,19 +40,47 @@ This project is a modern, visually stunning analytics dashboard built rapidly us
 
 ### Prerequisites
 
--   A modern web browser that supports `importmap`.
+-   Node.js (v16 or higher)
+-   npm or yarn package manager
 
 ### Running the Application
 
-No build step or installation is required.
-
-1.  **Open `index.html`:** Simply open the `index.html` file in your favorite web browser.
-2.  **Local Server (Optional):** For development, you can serve the project directory using a simple local server to avoid potential CORS issues with local file access.
+1.  **Install Dependencies:**
     ```bash
-    # If you have Python 3 installed
-    python -m http.server
-
-    # Or use a tool like 'live-server' for automatic reloading
-    npx live-server
+    npm install
     ```
-    Then, open the provided URL (e.g., `http://localhost:8000`) in your browser.
+
+2.  **Start Development Server:**
+    ```bash
+    npm run dev
+    ```
+
+3.  **Open Browser:** Navigate to `http://localhost:5173` to view the dashboard.
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 🔄 Real-time Updates
+
+The dashboard simulates real-time data updates every 10 seconds, including:
+- KPI metric changes
+- Revenue chart updates
+- User acquisition data fluctuations
+- Device breakdown adjustments
+- Sales status updates
+
+---
+
+## 📊 Export Features
+
+The Recent Sales table includes export functionality:
+- **Export as CSV:** Downloads sales data in CSV format
+- **Export as PDF:** Generates a formatted PDF report of sales data
+
+Both export options preserve the current table data and formatting.
