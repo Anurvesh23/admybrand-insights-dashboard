@@ -16,10 +16,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { recentSalesData } from '../../data/mockData';
-import type { RecentSale } from '../../types';
-import { formatCurrency } from '../../lib/utils';
 import { Badge } from '../ui/Badge';
+import { formatCurrency } from '../../lib/utils';
+import type { RecentSale } from '../../types';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import Papa from 'papaparse';
 
 const columns: ColumnDef<RecentSale>[] = [
   {
@@ -55,13 +57,13 @@ const columns: ColumnDef<RecentSale>[] = [
   },
 ];
 
-export const RecentSales = () => {
+export const RecentSales = ({ recentSalesData }: { recentSalesData: RecentSale[] }) => {
   const [data] = React.useState(() => [...recentSalesData]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
-    data,
+    data: recentSalesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -80,6 +82,34 @@ export const RecentSales = () => {
     }
   });
 
+  // Export as CSV
+  const handleExportCSV = () => {
+    const csv = Papa.unparse(recentSalesData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'recent_sales.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Export as PDF
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    // Prepare table data
+    const tableColumn = ["Customer", "Email", "Status", "Amount"];
+    const tableRows = recentSalesData.map(sale => [
+      sale.name,
+      sale.email,
+      sale.status,
+      sale.amount
+    ]);
+    autoTable(doc, { head: [tableColumn], body: tableRows });
+    doc.save('recent_sales.pdf');
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -87,7 +117,7 @@ export const RecentSales = () => {
         <CardDescription>An overview of the most recent sales transactions.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 gap-2">
           <Input
             placeholder="Filter by customer name..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -96,6 +126,12 @@ export const RecentSales = () => {
             }
             className="max-w-sm"
           />
+          <Button variant="outline" size="sm" onClick={handleExportCSV}>
+            Export as CSV
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleExportPDF}>
+            Export as PDF
+          </Button>
         </div>
         <div className="rounded-md border">
           <Table>

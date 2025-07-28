@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { kpiData } from '../../data/mockData';
 import { cn } from '../../lib/utils';
 import { Activity, CreditCard, DollarSign, Users } from 'lucide-react';
+import type { KpiData } from '../../types';
 
 const iconMap: { [key: string]: React.ElementType } = {
   "Total Revenue": DollarSign,
@@ -11,7 +11,7 @@ const iconMap: { [key: string]: React.ElementType } = {
   "Growth": Activity,
 };
 
-export const KpiCards = () => {
+export const KpiCards = ({ kpiData }: { kpiData: KpiData[] }) => {
   return (
     <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
       {kpiData.map((kpi, index) => {

@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card';
-import { revenueData } from '../../data/mockData';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { useTheme } from '../../contexts/ThemeContext';
+import type { RevenueData } from '../../types';
 
-export const RevenueChart = () => {
+export const RevenueChart = ({ revenueData }: { revenueData: RevenueData[] }) => {
     const { theme } = useTheme();
     const strokeColor = theme === 'dark' ? '#a1a1aa' : '#374151'; // zinc-400 : gray-700
     const tooltipBg = theme === 'dark' ? '#18181b' : '#ffffff'; // zinc-900 : white

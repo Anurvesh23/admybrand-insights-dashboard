@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card';
-import { userAcquisitionData } from '../../data/mockData';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { useTheme } from '../../contexts/ThemeContext';
+import type { UserAcquisitionData } from '../../types';
 
-export const UserAcquisitionChart = () => {
+export const UserAcquisitionChart = ({ userAcquisitionData }: { userAcquisitionData: UserAcquisitionData[] }) => {
     const { theme } = useTheme();
     const strokeColor = theme === 'dark' ? '#a1a1aa' : '#374151';
     const tooltipBg = theme === 'dark' ? '#18181b' : '#ffffff';
